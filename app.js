@@ -3,31 +3,41 @@ const bankProfiles = {
     name: 'Kotak Mahindra Bank',
     accent: '#D92F32',
     bg: '#fff4f4',
-    ifsc: 'KKBK0001234'
+    ifsc: 'KKBK0001234',
+    logo: 'KOTAK',
+    branch: 'HYDERABAD KUKATPALLY'
   },
   hdfc: {
     name: 'HDFC Bank',
     accent: '#0047AB',
     bg: '#eef5ff',
-    ifsc: 'HDFC0000364'
+    ifsc: 'HDFC0000364',
+    logo: 'HDFC',
+    branch: 'HYDERABAD KUKATPALLY'
   },
   icici: {
     name: 'ICICI Bank',
     accent: '#ff8f1f',
     bg: '#fff5eb',
-    ifsc: 'ICIC0001234'
+    ifsc: 'ICIC0001234',
+    logo: 'ICICI',
+    branch: 'HYDERABAD KUKATPALLY'
   },
   sbi: {
     name: 'State Bank of India',
     accent: '#0b8a68',
     bg: '#eefcf6',
-    ifsc: 'SBIN0001234'
+    ifsc: 'SBIN0001234',
+    logo: 'SBI',
+    branch: 'HYDERABAD KUKATPALLY'
   },
   axis: {
     name: 'Axis Bank',
     accent: '#7f3fbf',
     bg: '#f5f0ff',
-    ifsc: 'UTIB0001234'
+    ifsc: 'UTIB0001234',
+    logo: 'AXIS',
+    branch: 'HYDERABAD KUKATPALLY'
   }
 };
 
@@ -37,42 +47,11 @@ const upiNames = [
   'NANDURAM J', 'Passport S', 'SRIKANTH P', 'DANISH', 'SIDDHI OMK', 'Jio Rechar',
   'Tapadia Di', 'VR RAGHAVE', 'SOUTHEE EN', 'MD SAMEER', 'MUDHAVATA', 'MOHAMMED F',
   'CITY PETRO', 'DEVKATTENA', 'BANSAL PHA', 'NAGESH', 'RELIANCE J', 'MR M VIKAS',
-  'MAHALAXMI', 'Netflix', 'ADITYA KIR', 'SRINIDHI M', 'VASU RAM', 'FIL MORE',
-  'Rajaram Mo', 'ZUNAIRA SU', 'GAJULA VEN', 'Balram Kir', 'Karkale Sa', 'KHUSHBUPAL',
-  'MAIRAJ MOH', 'BIGTREE EN', 'RUDHRA MAN', 'Shiva Shan', 'KISHORE AM', 'Redbus Ind',
-  'NAGESH V S', 'PUKALE SHU', 'SUDHRA MAN', 'RUDHRA MAN', 'SHANKAR KA', 'SADDULA RE',
-  'AKASH ENTE', 'SULIGE MAN', 'PAVAN PADM', 'MR K NIKHI', 'ASHAMMAGAR', 'SAMADHAN F',
-  'ZEPTO LTD', 'M Jyothi', 'RAGHAVE', 'Zepto Mark', 'MR CH PRAH', '7601078284', 'MR BABITAD'
+  'MAHALAXMI', 'Netflix', 'ADITYA KIR', 'SRINIDHI M', 'VASU RAM', 'FIL MORE'
 ];
 
 const banks = ['YES BANK', 'AXIS BANK', 'HDFC BANK', 'State Bank', 'Kotak Mahi', 'BANK OF IN', 'FEDERAL BA', 'INDUSIND B'];
 const bankTags = ['@ybl', '@okb', '@ibl', '@upi', '@axl', '@pti', '@kot', '@hdf'];
-
-const cashDepositPatterns = [
-  'Credit trxn CAM/13162HAR/CASH DEP-Self/17-04-26/8187',
-  'Credit trxn CAM/13161SRY/CASH DEP-Self/02-05-26/3172',
-  'Credit trxn CAM/49991ORY/CASH DEP-Self/22-05-26/2189',
-  'Credit trxn CAM/13162HAR/CASH DEP-Self/13-06-26/9140',
-  'Credit trxn CAM/49991ORY/CASH DEP-Self/14-06-26/298',
-  'Credit trxn CAM/13161SRY/CASH DEP-Self/11-06-26/2089'
-];
-
-const atmPatterns = [
-  'ATM trxn NFS/CASH WDL/614215011054/HIT02219/HYDERABAD/22-05-261539',
-  'ATM trxn NFS/CASH WDL/616721019123/P3DCHB30/HYDERABAD/16-06-262127'
-];
-
-const visaPatterns = [
-  'VISA trxn VSI/GOOGLEPLAY /202604160127/610619229459/',
-  'VISA trxn VSI/GOOGLEPLAY /202606160127/616719707874/',
-  'VISA trxn VPS/FILMORE /202605181510/613809149333/HYDERABAD',
-  'VISA trxn VPS/BPCL ROYAL /202605222038/614215780975/Hyderabad'
-];
-
-const neftPatterns = [
-  'NEFT-IN22617434134294-ZEPTO LTD-ZEPTO LTD-ZEPTO LTD-0104SLNEFTPL-ICIC0099999',
-  'NEFT-AXISP00803641387-CODEFORCE PRIVATE LIMITED -1062026057-918020052698589-UTIB0000515'
-];
 
 function randomItem(list) {
   return list[Math.floor(Math.random() * list.length)];
@@ -85,17 +64,16 @@ function buildUPIText() {
   const ref = `${Math.floor(Math.random() * 900000000000) + 100000000000}`;
   const amount = Math.floor(Math.random() * 3000) + 20;
   return {
-    description: `UPI/${name}/${ref}${tag}/Payment fr/${bank}/${ref}/IBL${Math.random().toString(16).slice(2, 30)}`,
+    description: `UPI/${name}/${ref}${tag}/Payment fr/${bank}/${ref}`,
     amount,
     type: 'debit'
   };
 }
 
-function buildCashDepositText(dateString) {
-  const pattern = randomItem(cashDepositPatterns);
+function buildCashDepositText() {
   const amount = [500, 600, 900, 1500, 2000, 3000, 4000, 6000, 15000][Math.floor(Math.random() * 9)];
   return {
-    description: `${pattern}`,
+    description: `CASH DEPOSIT-OVER COUNTER-SELF`,
     amount,
     type: 'credit'
   };
@@ -103,55 +81,27 @@ function buildCashDepositText(dateString) {
 
 function buildVisaText() {
   return {
-    description: randomItem(visaPatterns),
-    amount: [50, 80, 130, 200, 270, 360, 537, 945, 1585.5][Math.floor(Math.random() * 9)],
+    description: `VISA DEBIT CARD PURCHASE-RETAIL`,
+    amount: [50, 80, 130, 200, 270, 360, 537][Math.floor(Math.random() * 7)],
     type: 'debit'
   };
 }
 
 function buildATMText() {
-  const amount = [10, 25, 40, 49, 50, 60, 100, 200, 1000, 3000, 5000][Math.floor(Math.random() * 11)];
+  const amount = [1000, 5000, 10000][Math.floor(Math.random() * 3)];
   return {
-    description: randomItem(atmPatterns),
+    description: `ATM CASH WITHDRAWAL`,
     amount,
     type: 'debit'
   };
 }
 
-function buildNEFTText() {
-  const amount = [175, 3109, 360, 6900, 13600, 17384][Math.floor(Math.random() * 6)];
-  return {
-    description: randomItem(neftPatterns),
-    amount,
-    type: Math.random() > 0.4 ? 'credit' : 'debit'
-  };
-}
-
-function buildSalaryText(dateString) {
-  const salaryValues = [65000, 75000, 82000, 90000, 95000];
-  return {
-    description: `SALARY CREDIT-ACME SOFTWARE SOLUTIONS P-${dateString}`,
-    amount: salaryValues[Math.floor(Math.random() * salaryValues.length)],
-    type: 'credit'
-  };
-}
-
-function buildRentText(dateString) {
-  return {
-    description: `NEFT-RENT DEPOSIT-LANDLORD ACCOUNT-${dateString}`,
-    amount: 15000,
-    type: 'debit'
-  };
-}
-
-function buildUtilityBillText(dateString) {
+function buildBillPaymentText() {
   const bills = [
-    { description: 'BILL PAYMENT-JIO POSTPAID-9876543210-0000000000002345', amount: 599 },
-    { description: 'BILL PAYMENT-ELECTRICITY-TSSPDCL-0000000000003456', amount: 2100 },
-    { description: 'BILL PAYMENT-AIRTEL PREDIRECT-0000000000003456', amount: 403 },
-    { description: 'BILL PAYMENT-INSURANCE-PREMIUM-LIC POLICY', amount: 5000 },
-    { description: 'BILL PAYMENT-WATER-SUPPLY-0000000000008765', amount: 850 },
-    { description: 'BILL PAYMENT-NETFLIX-MANDATE EXE-AXIS BANK', amount: 199 }
+    { description: 'JIO MOBILE RECHARGE', amount: 599 },
+    { description: 'AIRTEL MOBILE RECHARGE', amount: 403 },
+    { description: 'ELECTRICITY BILL PAYMENT', amount: 2100 },
+    { description: 'INSURANCE PREMIUM DEBIT', amount: 5000 }
   ];
   const bill = randomItem(bills);
   return {
@@ -199,42 +149,46 @@ function createTransactionEntries(startDate, endDate, openingBalance) {
     const dateKey = toDateString(currentDate);
     const dayOfMonth = currentDate.getDate();
 
+    // Salary on 1st
     if (dayOfMonth === 1) {
-      const salary = buildSalaryText(dateKey);
-      currentBalance += salary.amount;
+      const salary = [65000, 75000, 82000, 90000, 95000][Math.floor(Math.random() * 5)];
+      currentBalance += salary;
       transactions.push({
         date: dateKey,
-        description: salary.description,
-        type: salary.type,
-        amount: salary.amount,
+        description: 'SAL-SALARY CREDIT-EMPLOYER',
+        type: 'credit',
+        amount: salary,
         balance: Number(currentBalance.toFixed(2))
       });
     }
 
-    if (dayOfMonth === 5 || dayOfMonth === 15 || dayOfMonth === 25) {
-      const rent = buildRentText(dateKey);
-      currentBalance -= rent.amount;
+    // Rent
+    if (dayOfMonth === 5 || dayOfMonth === 20) {
+      const rent = 15000;
+      currentBalance -= rent;
       transactions.push({
         date: dateKey,
-        description: rent.description,
-        type: rent.type,
-        amount: rent.amount,
+        description: 'NEFT-RENT PAYMENT-LANDLORD',
+        type: 'debit',
+        amount: rent,
         balance: Number(currentBalance.toFixed(2))
       });
     }
 
-    if (dayOfMonth === 7 || dayOfMonth === 10 || dayOfMonth === 21) {
-      const utility = buildUtilityBillText(dateKey);
-      currentBalance -= utility.amount;
+    // Utilities
+    if (dayOfMonth === 7 || dayOfMonth === 15) {
+      const bill = buildBillPaymentText();
+      currentBalance -= bill.amount;
       transactions.push({
         date: dateKey,
-        description: utility.description,
-        type: utility.type,
-        amount: utility.amount,
+        description: bill.description,
+        type: bill.type,
+        amount: bill.amount,
         balance: Number(currentBalance.toFixed(2))
       });
     }
 
+    // UPI
     if (dayOfMonth % 3 === 0 && dayOfMonth % 5 !== 0) {
       const upi = buildUPIText();
       currentBalance -= upi.amount;
@@ -247,13 +201,10 @@ function createTransactionEntries(startDate, endDate, openingBalance) {
       });
     }
 
-    if (dayOfMonth % 6 === 0 || dayOfMonth % 7 === 0) {
-      const cash = buildCashDepositText(dateKey);
-      if (cash.type === 'credit') {
-        currentBalance += cash.amount;
-      } else {
-        currentBalance -= cash.amount;
-      }
+    // Cash deposit
+    if (dayOfMonth % 6 === 0) {
+      const cash = buildCashDepositText();
+      currentBalance += cash.amount;
       transactions.push({
         date: dateKey,
         description: cash.description,
@@ -263,19 +214,8 @@ function createTransactionEntries(startDate, endDate, openingBalance) {
       });
     }
 
-    if (dayOfMonth % 8 === 0 && Math.random() > 0.35) {
-      const card = buildVisaText();
-      currentBalance -= card.amount;
-      transactions.push({
-        date: dateKey,
-        description: card.description,
-        type: card.type,
-        amount: card.amount,
-        balance: Number(currentBalance.toFixed(2))
-      });
-    }
-
-    if (dayOfMonth % 9 === 0 && Math.random() > 0.55) {
+    // ATM
+    if (dayOfMonth % 9 === 0) {
       const atm = buildATMText();
       currentBalance -= atm.amount;
       transactions.push({
@@ -283,22 +223,6 @@ function createTransactionEntries(startDate, endDate, openingBalance) {
         description: atm.description,
         type: atm.type,
         amount: atm.amount,
-        balance: Number(currentBalance.toFixed(2))
-      });
-    }
-
-    if (dayOfMonth % 11 === 0) {
-      const neft = buildNEFTText();
-      if (neft.type === 'credit') {
-        currentBalance += neft.amount;
-      } else {
-        currentBalance -= neft.amount;
-      }
-      transactions.push({
-        date: dateKey,
-        description: neft.description,
-        type: neft.type,
-        amount: neft.amount,
         balance: Number(currentBalance.toFixed(2))
       });
     }
@@ -400,67 +324,157 @@ function downloadStatementPdf() {
   if (!statement) generateStatementDataFromForm();
 
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const doc = new jsPDF({ unit: 'mm', format: 'a4', margin: [10, 10, 10, 10] });
   const bankProfile = bankProfiles[document.getElementById('bankTemplate').value] || bankProfiles.kotak;
 
-  doc.setFillColor(31, 111, 235);
-  doc.rect(0, 0, 210, 35, 'F');
-  doc.setTextColor(255, 255, 255);
+  // ===== HEADER SECTION =====
+  // Bank Name & Logo Box
+  doc.setFillColor(245, 245, 245);
+  doc.rect(10, 10, 190, 20, 'F');
+  
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(18);
-  doc.text(bankProfile.name, 14, 15);
-  doc.setFontSize(10);
-  doc.text('Account Statement', 14, 24);
+  doc.setFontSize(16);
+  doc.setTextColor(20, 20, 20);
+  doc.text(bankProfile.name, 15, 22);
 
-  doc.setTextColor(28, 35, 43);
   doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(80, 80, 80);
+  doc.text('Account Statement', 15, 27);
+
+  // ===== ACCOUNT INFORMATION =====
   doc.setFontSize(10);
-  doc.text(`Account Holder: ${statement.holderName}`, 14, 48);
-  doc.text(`Account Number: ${statement.accountNumber}`, 14, 55);
-  doc.text(`IFSC: ${statement.ifscCode}`, 14, 62);
-  doc.text(`Period: ${statement.startDate} to ${statement.endDate}`, 120, 48);
-  doc.text(`Opening Balance: ${formatMoney(statement.openingBalance)}`, 120, 55);
-  doc.text(`Closing Balance: ${formatMoney(statement.closingBalance)}`, 120, 62);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(0, 0, 0);
+  doc.text('Account Details', 15, 38);
 
-  doc.setDrawColor(200, 200, 200);
-  doc.line(14, 70, 196, 70);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(50, 50, 50);
 
-  let y = 80;
-  const colX = [14, 42, 103, 142, 175];
-  const headers = ['Date', 'Narration', 'Type', 'Amt', 'Bal'];
+  const infoY = 45;
+  const colWidth = 95;
+  
+  doc.text(`Account Holder: ${statement.holderName}`, 15, infoY);
+  doc.text(`Account Number: ${statement.accountNumber}`, 15, infoY + 6);
+  doc.text(`IFSC Code: ${statement.ifscCode}`, 15, infoY + 12);
+  doc.text(`Branch: ${bankProfile.branch}`, 15, infoY + 18);
 
+  doc.text(`Statement Period: ${statement.startDate} to ${statement.endDate}`, 110, infoY);
+  doc.text(`Opening Balance: ${formatMoney(statement.openingBalance)}`, 110, infoY + 6);
+  doc.text(`Closing Balance: ${formatMoney(statement.closingBalance)}`, 110, infoY + 12);
+  doc.text(`Generated: ${new Date().toLocaleDateString('en-GB')}`, 110, infoY + 18);
+
+  // ===== SUMMARY BOX =====
+  const summaryY = 72;
+  doc.setFillColor(235, 245, 255);
+  doc.rect(10, summaryY, 190, 18, 'F');
+  
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
-  headers.forEach((header, index) => doc.text(header, colX[index], y));
-  doc.line(14, y + 2, 196, y + 2);
+  doc.setTextColor(0, 0, 0);
+  
+  const summary = statement.transactions.filter((t) => t.type === 'credit').reduce((sum, item) => sum + item.amount, 0);
+  const debits = statement.transactions.filter((t) => t.type === 'debit').reduce((sum, item) => sum + item.amount, 0);
+  
+  doc.text(`Total Credits: ${formatMoney(summary)}`, 15, summaryY + 6);
+  doc.text(`Total Debits: ${formatMoney(debits)}`, 70, summaryY + 6);
+  doc.text(`Net: ${formatMoney(summary - debits)}`, 140, summaryY + 6);
 
-  y += 8;
-  doc.setFont('helvetica', 'normal');
+  // ===== TABLE HEADER =====
+  const tableY = 95;
+  doc.setFillColor(240, 240, 240);
+  doc.rect(10, tableY, 190, 7, 'F');
+
+  doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
+  doc.setTextColor(0, 0, 0);
 
-  statement.transactions.slice(0, 40).forEach((entry) => {
-    if (y > 270) {
+  const columns = [
+    { label: 'Date', x: 15, width: 20 },
+    { label: 'Transaction Details', x: 37, width: 95 },
+    { label: 'Debit', x: 134, width: 25 },
+    { label: 'Credit', x: 162, width: 25 },
+    { label: 'Balance', x: 175, width: 25 }
+  ];
+
+  columns.forEach(col => {
+    doc.text(col.label, col.x, tableY + 5);
+  });
+
+  // ===== TRANSACTION TABLE =====
+  let y = tableY + 10;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.setTextColor(0, 0, 0);
+
+  const rowsPerPage = 28;
+  let currentRow = 0;
+
+  statement.transactions.forEach((entry, index) => {
+    if (currentRow >= rowsPerPage) {
+      // New page
       doc.addPage();
-      y = 18;
+      y = 20;
+      currentRow = 0;
+
+      // Repeat header on new page
+      doc.setFillColor(240, 240, 240);
+      doc.rect(10, y, 190, 7, 'F');
       doc.setFont('helvetica', 'bold');
-      headers.forEach((header, index) => doc.text(header, colX[index], y));
-      doc.line(14, y + 2, 196, y + 2);
-      y += 8;
+      doc.setFontSize(8);
+      columns.forEach(col => {
+        doc.text(col.label, col.x, y + 5);
+      });
+      y += 10;
       doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
     }
 
-    const displayType = entry.type === 'credit' ? 'CR' : 'DR';
-    const amountStr = entry.type === 'credit' ? `+${entry.amount.toFixed(2)}` : `-${entry.amount.toFixed(2)}`;
-    const balanceStr = entry.balance.toFixed(2);
-    const label = String(entry.description).slice(0, 40);
+    // Alternate row colors
+    if (currentRow % 2 === 0) {
+      doc.setFillColor(255, 255, 255);
+    } else {
+      doc.setFillColor(250, 250, 250);
+    }
+    doc.rect(10, y - 2, 190, 5, 'F');
 
-    doc.text(formatShortDate(entry.date), colX[0], y);
-    doc.text(label, colX[1], y);
-    doc.text(displayType, colX[2], y);
-    doc.text(amountStr, colX[3], y);
-    doc.text(balanceStr, colX[4], y);
-    y += 6;
+    // Date
+    doc.text(formatShortDate(entry.date), 15, y + 1);
+
+    // Description (truncated if too long)
+    const desc = entry.description.substring(0, 45);
+    doc.text(desc, 37, y + 1);
+
+    // Debit/Credit columns
+    if (entry.type === 'debit') {
+      doc.text(entry.amount.toFixed(2), 134, y + 1);
+    } else {
+      doc.text(entry.amount.toFixed(2), 162, y + 1);
+    }
+
+    // Balance
+    doc.setFont('helvetica', 'bold');
+    doc.text(entry.balance.toFixed(2), 175, y + 1);
+    doc.setFont('helvetica', 'normal');
+
+    y += 5;
+    currentRow++;
   });
+
+  // ===== FOOTER =====
+  const pageCount = doc.internal.pages.length - 1;
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(100, 100, 100);
+    
+    const pageHeight = doc.internal.pageSize.height;
+    doc.text(`Page ${i} of ${pageCount}`, 200, pageHeight - 5, { align: 'right' });
+    doc.text('This is a computer generated statement. No signature required.', 15, pageHeight - 5);
+    doc.text(bankProfile.name + ' | ' + statement.accountNumber, 110, pageHeight - 5, { align: 'center' });
+  }
 
   doc.save(`${statement.accountNumber}_statement.pdf`);
 }
