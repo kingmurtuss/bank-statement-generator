@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bank Statement Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <div class="brand-mark">₹</div>
+          <div>
+            <p class="eyebrow">Statement Suite</p>
+            <h1>Bank Statement Generator</h1>
+          </div>
+        </div>
+
+        <form id="statement-form" class="statement-form">
+          <div class="field-group">
+            <label for="holderName">Account Holder</label>
+            <input id="holderName" name="holderName" type="text" value="Asha Verma" required />
+          </div>
+
+          <div class="field-group">
+            <label for="accountNumber">Account Number</label>
+            <input id="accountNumber" name="accountNumber" type="text" value="123456789012" required />
+          </div>
+
+          <div class="field-group">
+            <label for="ifscCode">IFSC Code</label>
+            <input id="ifscCode" name="ifscCode" type="text" value="KKBK0001234" required />
+          </div>
+
+          <div class="field-group">
+            <label for="bankTemplate">Bank Template</label>
+            <select id="bankTemplate" name="bankTemplate">
+              <option value="kotak">Kotak Mahindra</option>
+              <option value="hdfc">HDFC</option>
+              <option value="icici">ICICI</option>
+              <option value="sbi">SBI</option>
+              <option value="axis">Axis Bank</option>
+            </select>
+          </div>
+
+          <div class="split-fields">
+            <div class="field-group">
+              <label for="startDate">From Date</label>
+              <input id="startDate" name="startDate" type="date" value="2025-01-01" required />
+            </div>
+            <div class="field-group">
+              <label for="endDate">To Date</label>
+              <input id="endDate" name="endDate" type="date" value="2025-01-31" required />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="openingBalance">Opening Balance</label>
+            <input id="openingBalance" name="openingBalance" type="number" value="250000" min="0" step="0.01" required />
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="primary-btn">Generate Statement</button>
+            <button type="button" id="downloadPdf" class="secondary-btn">Download PDF</button>
+          </div>
+        </form>
+      </aside>
+
+      <main class="content-panel">
+        <header class="summary-header">
+          <div>
+            <p class="eyebrow neutral">Account Overview</p>
+            <h2>Statement Summary</h2>
+          </div>
+          <div id="bankBadge" class="bank-badge">Kotak Mahindra</div>
+        </header>
+
+        <section class="stats-grid">
+          <article class="stat-card accent-card">
+            <span>Opening Balance</span>
+            <strong id="openingValue">₹ 2,50,000.00</strong>
+          </article>
+          <article class="stat-card">
+            <span>Total Credits</span>
+            <strong id="creditValue">₹ 0.00</strong>
+          </article>
+          <article class="stat-card">
+            <span>Total Debits</span>
+            <strong id="debitValue">₹ 0.00</strong>
+          </article>
+          <article class="stat-card saldo-card">
+            <span>Closing Balance</span>
+            <strong id="closingValue">₹ 0.00</strong>
+          </article>
+        </section>
+
+        <section class="statement-preview">
+          <div class="preview-header">
+            <div>
+              <p class="eyebrow neutral">Preview</p>
+              <h3>Daily Transaction Record</h3>
+            </div>
+            <span id="dateRangeLabel">01 Jan 2025 - 31 Jan 2025</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody id="transactionTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
