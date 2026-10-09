@@ -31,22 +31,68 @@ const bankProfiles = {
   }
 };
 
-const descriptors = [
-  'Salary Credit',
-  'UPI Transfer',
-  'ATM Withdrawal',
-  'Bill Payment',
-  'Rent Deposit',
-  'Shopping Expense',
-  'Client Payment',
-  'Fuel Refill',
-  'Internet Bill',
-  'Insurance Premium',
-  'MRT Cash Deposit',
-  'Investment Return',
-  'Food Purchase',
-  'Mobile Recharge',
-  'Grocery Purchase'
+// Realistic transaction data with proper descriptions
+const transactionData = [
+  // Salary credits (monthly)
+  { description: 'SALARY CREDIT-ACME SOFTWARE SOLUTIONS P', amount: 75000, type: 'credit', frequency: 'monthly' },
+  { description: 'SALARY CREDIT-PAYROLL SERVICES PVT LTD', amount: 85000, type: 'credit', frequency: 'monthly' },
+  
+  // Regular payments and bills
+  { description: 'DEBIT CARD PURCHASE-WALMART SUPER CENTER', amount: 3200, type: 'debit', frequency: 'variable' },
+  { description: 'DEBIT CARD PURCHASE-BIGMART HYPERMARKET', amount: 5400, type: 'debit', frequency: 'variable' },
+  { description: 'DEBIT CARD PURCHASE-AMAZON.IN E-COMMERCE', amount: 2890, type: 'debit', frequency: 'variable' },
+  { description: 'DEBIT CARD PURCHASE-FLIPKART E-COMMERCE', amount: 4150, type: 'debit', frequency: 'variable' },
+  
+  // Utility payments
+  { description: 'BILL PAYMENT-ELECTRICITY BOARD KARNATAKA', amount: 2100, type: 'debit', frequency: 'monthly' },
+  { description: 'BILL PAYMENT-JALGAON WATER SUPPLY BOARD', amount: 850, type: 'debit', frequency: 'monthly' },
+  { description: 'BILL PAYMENT-AIRTEL BROADBAND', amount: 1299, type: 'debit', frequency: 'monthly' },
+  { description: 'BILL PAYMENT-JIO MOBILE RECHARGE', amount: 399, type: 'debit', frequency: 'monthly' },
+  { description: 'BILL PAYMENT-VI MOBILE RECHARGE', amount: 649, type: 'debit', frequency: 'monthly' },
+  
+  // Insurance and financial services
+  { description: 'INSURANCE PREMIUM-LIC LIFE INSURANCE', amount: 5000, type: 'debit', frequency: 'monthly' },
+  { description: 'INSURANCE PREMIUM-HDFC GENERAL INSURANCE', amount: 3500, type: 'debit', frequency: 'quarterly' },
+  { description: 'MUTUAL FUND INVESTMENT-DIRECT DEBIT', amount: 10000, type: 'debit', frequency: 'monthly' },
+  { description: 'DIVIDEND RECEIVED-APOLLO HOSPITALS', amount: 1850, type: 'credit', frequency: 'quarterly' },
+  { description: 'INTEREST RECEIVED-SAVING ACCOUNT CREDIT', amount: 240, type: 'credit', frequency: 'monthly' },
+  
+  // Transfers and payments
+  { description: 'NEFT-ROHIT SHARMA-PERSONAL TRANSFER', amount: 5000, type: 'debit', frequency: 'variable' },
+  { description: 'NEFT-PRIYA NAIR-PERSONAL TRANSFER', amount: 8000, type: 'debit', frequency: 'variable' },
+  { description: 'NEFT-RENT DEPOSIT-LANDLORD ACCOUNT', amount: 15000, type: 'debit', frequency: 'monthly' },
+  { description: 'NEFT RECEIVED-FREELANCE PROJECT PAYMENT', amount: 12500, type: 'credit', frequency: 'variable' },
+  { description: 'UPI-TRANSFER-MOBILE PAY', amount: 350, type: 'debit', frequency: 'variable' },
+  { description: 'UPI-TRANSFER-FUEL STATION', amount: 2000, type: 'debit', frequency: 'variable' },
+  
+  // Cash transactions
+  { description: 'ATM WITHDRAWAL-KOTAK MAHINDRA BANK', amount: 10000, type: 'debit', frequency: 'variable' },
+  { description: 'ATM WITHDRAWAL-HDFC BANK ATM', amount: 5000, type: 'debit', frequency: 'variable' },
+  { description: 'CASH DEPOSIT-OVER THE COUNTER', amount: 8000, type: 'credit', frequency: 'variable' },
+  { description: 'CHEQUE DEPOSIT-CHQ NO 123456', amount: 25000, type: 'credit', frequency: 'variable' },
+  
+  // Shopping and lifestyle
+  { description: 'DEBIT CARD PURCHASE-CAFE COFFEE DAY', amount: 450, type: 'debit', frequency: 'variable' },
+  { description: 'DEBIT CARD PURCHASE-METRO CINEMA HALL', amount: 600, type: 'debit', frequency: 'variable' },
+  { description: 'DEBIT CARD PURCHASE-URBAN COMPANY SALON', amount: 1200, type: 'debit', frequency: 'variable' },
+  { description: 'DEBIT CARD PURCHASE-SWIGGY FOOD DELIVERY', amount: 680, type: 'debit', frequency: 'variable' },
+  { description: 'DEBIT CARD PURCHASE-ZOMATO FOOD DELIVERY', amount: 520, type: 'debit', frequency: 'variable' },
+  { description: 'DEBIT CARD PURCHASE-UBER RIDE BOOKING', amount: 380, type: 'debit', frequency: 'variable' },
+  { description: 'DEBIT CARD PURCHASE-OYO HOTEL BOOKING', amount: 4200, type: 'debit', frequency: 'variable' },
+  
+  // Online subscriptions
+  { description: 'ONLINE PURCHASE-NETFLIX SUBSCRIPTION', amount: 649, type: 'debit', frequency: 'monthly' },
+  { description: 'ONLINE PURCHASE-AMAZON PRIME MEMBERSHIP', amount: 999, type: 'debit', frequency: 'quarterly' },
+  { description: 'ONLINE PURCHASE-MEDIUM SUBSCRIPTION', amount: 500, type: 'debit', frequency: 'monthly' },
+  
+  // Medical and health
+  { description: 'DEBIT CARD PURCHASE-APOLLO PHARMACY', amount: 1850, type: 'debit', frequency: 'variable' },
+  { description: 'DEBIT CARD PURCHASE-FORTIS HOSPITAL', amount: 3500, type: 'debit', frequency: 'variable' },
+  
+  // Travel
+  { description: 'ONLINE PURCHASE-MAKE MY TRIP FLIGHT', amount: 12800, type: 'debit', frequency: 'variable' },
+  { description: 'ONLINE PURCHASE-IRCTC RAILWAY TICKET', amount: 2450, type: 'debit', frequency: 'variable' },
+  { description: 'ONLINE PURCHASE-CLEARTRIP HOTEL BOOKING', amount: 8900, type: 'debit', frequency: 'variable' },
 ];
 
 const moneyFormatter = new Intl.NumberFormat('en-IN', {
@@ -91,41 +137,121 @@ function createTransactionEntries(startDate, endDate, openingBalance) {
   let currentBalance = Number(openingBalance);
   const diffDays = getDateDifferenceInDays(startDate, endDate);
 
+  // Track recurring transactions
+  const processedTransactions = [];
+
   for (let i = 0; i <= diffDays; i += 1) {
     const currentDate = new Date(startDate + 'T00:00:00');
     currentDate.setDate(currentDate.getDate() + i);
 
     const dateKey = toDateString(currentDate);
     const dayOfMonth = currentDate.getDate();
-    const dayMode = (dayOfMonth % 4 + i) % 3;
+    const dayOfWeek = currentDate.getDay();
 
-    const txCount = dayMode === 0 ? 1 : dayMode === 1 ? 2 : 3;
-
-    for (let j = 0; j < txCount; j += 1) {
-      const baseIndex = ((i + 1) * (j + 2)) % descriptors.length;
-      const descriptor = descriptors[baseIndex];
-      const isCredit = (i + j) % 3 !== 0;
-      const amount = Number((((dayOfMonth * (j + 5)) % 4700) + 1500).toFixed(2));
-      const transactionAmount = isCredit ? amount : amount * 0.8 + 180;
-      const finalAmount = Number(transactionAmount.toFixed(2));
-
-      if (isCredit) {
-        currentBalance += finalAmount;
-      } else {
-        currentBalance -= finalAmount;
+    // Add salary on 1st of month
+    if (dayOfMonth === 1) {
+      const salaryTx = transactionData.find(t => t.frequency === 'monthly' && t.type === 'credit');
+      if (salaryTx) {
+        currentBalance += salaryTx.amount;
+        processedTransactions.push({
+          date: dateKey,
+          description: salaryTx.description,
+          type: salaryTx.type,
+          amount: salaryTx.amount,
+          balance: Number(currentBalance.toFixed(2))
+        });
       }
+    }
 
-      transactions.push({
-        date: dateKey,
-        description: descriptor,
-        type: isCredit ? 'credit' : 'debit',
-        amount: finalAmount,
-        balance: Number(currentBalance.toFixed(2))
-      });
+    // Add utility bills on specific days
+    if (dayOfMonth === 5) {
+      const electricityTx = transactionData.find(t => t.description.includes('ELECTRICITY'));
+      if (electricityTx) {
+        currentBalance -= electricityTx.amount;
+        processedTransactions.push({
+          date: dateKey,
+          description: electricityTx.description,
+          type: electricityTx.type,
+          amount: electricityTx.amount,
+          balance: Number(currentBalance.toFixed(2))
+        });
+      }
+    }
+
+    if (dayOfMonth === 10) {
+      const waterTx = transactionData.find(t => t.description.includes('WATER'));
+      if (waterTx) {
+        currentBalance -= waterTx.amount;
+        processedTransactions.push({
+          date: dateKey,
+          description: waterTx.description,
+          type: waterTx.type,
+          amount: waterTx.amount,
+          balance: Number(currentBalance.toFixed(2))
+        });
+      }
+    }
+
+    // Add rent on 15th
+    if (dayOfMonth === 15) {
+      const rentTx = transactionData.find(t => t.description.includes('RENT'));
+      if (rentTx) {
+        currentBalance -= rentTx.amount;
+        processedTransactions.push({
+          date: dateKey,
+          description: rentTx.description,
+          type: rentTx.type,
+          amount: rentTx.amount,
+          balance: Number(currentBalance.toFixed(2))
+        });
+      }
+    }
+
+    // Add insurance on specific days
+    if (dayOfMonth === 8) {
+      const insuranceTx = transactionData.find(t => t.description.includes('LIC'));
+      if (insuranceTx) {
+        currentBalance -= insuranceTx.amount;
+        processedTransactions.push({
+          date: dateKey,
+          description: insuranceTx.description,
+          type: insuranceTx.type,
+          amount: insuranceTx.amount,
+          balance: Number(currentBalance.toFixed(2))
+        });
+      }
+    }
+
+    // Random variable transactions on some days
+    if (dayOfMonth % 3 === 0 || dayOfMonth % 5 === 0) {
+      const randomCount = 1 + Math.floor(Math.random() * 2);
+      
+      for (let j = 0; j < randomCount; j++) {
+        const variableTxs = transactionData.filter(t => t.frequency === 'variable');
+        const randomTx = variableTxs[Math.floor(Math.random() * variableTxs.length)];
+        
+        // Add some variation to amounts
+        const variance = 0.85 + Math.random() * 0.3;
+        const amount = Math.round(randomTx.amount * variance);
+
+        if (randomTx.type === 'credit') {
+          currentBalance += amount;
+        } else {
+          currentBalance -= amount;
+        }
+
+        processedTransactions.push({
+          date: dateKey,
+          description: randomTx.description,
+          type: randomTx.type,
+          amount: amount,
+          balance: Number(currentBalance.toFixed(2))
+        });
+      }
     }
   }
 
-  return transactions;
+  return processedTransactions;
 }
 
 function updateBankTheme(bankKey) {
